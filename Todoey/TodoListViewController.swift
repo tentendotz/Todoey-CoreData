@@ -13,7 +13,18 @@ class TodoListViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        
+        //MARK: - Customize for Navigation Bar Appearance
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = UIColor.systemIndigo
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navigationItem.standardAppearance = appearance
+        navigationItem.scrollEdgeAppearance = appearance
+        
+        // Customize for Bar Button Item Color
+        navigationController?.navigationBar.tintColor = UIColor.white
+        
     }
 
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
