@@ -7,13 +7,18 @@
 
 import UIKit
 
-class TodoListViewController: UIViewController {
+class TodoListViewController: UITableViewController {
 
+    @IBOutlet weak var searchBar: UISearchBar!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     }
 
-
+    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        
+    }
+    
 }
 

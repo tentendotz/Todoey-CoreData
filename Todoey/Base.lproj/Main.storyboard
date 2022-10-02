@@ -39,12 +39,12 @@
                     <navigationItem key="navigationItem" title="Todoey" id="dxN-io-Zg8">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="3UU-QL-pLY">
                             <connections>
-                                <action selector="addButtonPressed:" destination="g1c-qf-Sel" id="lVE-Qc-KjC"/>
+                                <action selector="addButtonPressed:" destination="g1c-qf-Sel" id="Dvj-jR-AI5"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="searchBar" destination="TUM-xB-8Xq" id="vE5-vR-q7w"/>
+                        <outlet property="searchBar" destination="TUM-xB-8Xq" id="K8z-cO-Wuc"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RLO-9m-XsV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
