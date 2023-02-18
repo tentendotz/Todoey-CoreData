@@ -9,7 +9,7 @@ import UIKit
 
 // Dummy class
 class Item {
-    let title = ""
+    var title = ""
     var done = false
 }
 
@@ -39,9 +39,26 @@ class TodoListViewController: UITableViewController {
     }
 
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        let alert = UIAlertController(title: "Add New Todo", message: "", preferredStyle: .alert)
+        var textField = UITextField()
         
+        let action = UIAlertAction(title: "Add Item", style: .default) { action in
+            let newItem = Item()
+            newItem.title = textField.text!
+            newItem.done = false
+            
+            self.itemArray.append(newItem)
+            self.tableView.reloadData()
+        }
+        
+        alert.addTextField { alertTextField in
+            alertTextField.placeholder = "Create new item"
+            textField = alertTextField
+        }
+        
+        alert.addAction(action)
+        present(alert, animated: true)
     }
-    
 }
 
 
