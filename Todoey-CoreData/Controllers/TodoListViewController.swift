@@ -41,6 +41,10 @@ class TodoListViewController: UITableViewController {
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         let alert = UIAlertController(title: "Add New Todo", message: "", preferredStyle: .alert)
         var textField = UITextField()
+        alert.addTextField { alertTextField in
+            alertTextField.placeholder = "Create new item"
+            textField = alertTextField
+        }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
         let addAction = UIAlertAction(title: "Add Item", style: .default) { action in
@@ -51,18 +55,9 @@ class TodoListViewController: UITableViewController {
             self.itemArray.append(newItem)
             self.tableView.reloadData()
         }
-        
-        alert.addTextField { alertTextField in
-            alertTextField.placeholder = "Create new item"
-            textField = alertTextField
-        }
-
-        alert.addAction(cancelAction)
-        alert.addAction(addAction)
+        [cancelAction, addAction].forEach { alert.addAction($0) }
         present(alert, animated: true)
     }
-    
-
 }
 
 
