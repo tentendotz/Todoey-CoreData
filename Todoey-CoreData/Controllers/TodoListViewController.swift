@@ -42,10 +42,15 @@ class TodoListViewController: UITableViewController {
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
         let addAction = UIAlertAction(title: "Add Item", style: .default) { action in
-            let newItem = Item()
+            let newItem = Item(context: self.context)
             newItem.title = textField.text!
             newItem.done = false
             
+            do {
+                try self.context.save()
+            } catch {
+                print("Error saving context, \(error)")
+            }
             self.itemArray.append(newItem)
             self.tableView.reloadData()
         }
