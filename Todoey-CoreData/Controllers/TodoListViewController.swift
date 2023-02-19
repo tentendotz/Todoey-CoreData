@@ -7,18 +7,12 @@
 
 import UIKit
 
-// Dummy class
-class Item {
-    var title = ""
-    var done = false
-}
-
-
 class TodoListViewController: UITableViewController {
 
     @IBOutlet weak var searchBar: UISearchBar!
     
     var itemArray = [Item]()
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
