@@ -45,18 +45,30 @@ class TodoListViewController: UITableViewController {
             let newItem = Item(context: self.context)
             newItem.title = textField.text!
             newItem.done = false
-            
-            do {
-                try self.context.save()
-            } catch {
-                print("Error saving context, \(error)")
-            }
+
             self.itemArray.append(newItem)
-            self.tableView.reloadData()
+            self.saveItems()
         }
         [cancelAction, addAction].forEach { alert.addAction($0) }
         present(alert, animated: true)
     }
+}
+
+
+//MARK: - Model Manipulation Methods
+
+extension TodoListViewController {
+    
+    func saveItems() {
+        do {
+            try context.save()
+        } catch {
+            print("Error saving context, \(error)")
+        }
+        tableView.reloadData()
+    }
+    
+    
 }
 
 
@@ -82,9 +94,7 @@ extension TodoListViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         itemArray[indexPath.row].done = !itemArray[indexPath.row].done
-        
-        tableView.reloadData()
-        
+        saveItems()
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
