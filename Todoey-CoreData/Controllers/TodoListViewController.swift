@@ -6,24 +6,20 @@
 //
 
 import UIKit
-
-// Dummy class
-class Item {
-    var title = ""
-    var done = false
-}
-
+import CoreData
 
 class TodoListViewController: UITableViewController {
 
     @IBOutlet weak var searchBar: UISearchBar!
     
     var itemArray = [Item]()
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //MARK: - Customize for Navigation Bar Appearance
+        loadItems()
+        
         let appearance = UINavigationBarAppearance()
         appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
         appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
@@ -48,15 +44,40 @@ class TodoListViewController: UITableViewController {
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
         let addAction = UIAlertAction(title: "Add Item", style: .default) { action in
-            let newItem = Item()
+            let newItem = Item(context: self.context)
             newItem.title = textField.text!
             newItem.done = false
-            
+
             self.itemArray.append(newItem)
-            self.tableView.reloadData()
+            self.saveItems()
         }
         [cancelAction, addAction].forEach { alert.addAction($0) }
         present(alert, animated: true)
+    }
+}
+
+
+//MARK: - Model Manipulation Methods
+
+extension TodoListViewController {
+    
+    func saveItems() {
+        do {
+            try context.save()
+        } catch {
+            print("Error saving context, \(error)")
+        }
+        tableView.reloadData()
+    }
+    
+    func loadItems() {
+        let request: NSFetchRequest<Item> = Item.fetchRequest()
+        do {
+            itemArray = try context.fetch(request)
+        } catch {
+            print("Error fetching data from context, \(error)")
+        }
+        tableView.reloadData()
     }
 }
 
@@ -83,9 +104,7 @@ extension TodoListViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         itemArray[indexPath.row].done = !itemArray[indexPath.row].done
-        
-        tableView.reloadData()
-        
+        saveItems()
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
