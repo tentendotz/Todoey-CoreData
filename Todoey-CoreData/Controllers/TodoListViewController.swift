@@ -50,6 +50,9 @@ class TodoListViewController: UITableViewController {
 
             self.itemArray.append(newItem)
             self.saveItems()
+            
+            let indexPath = IndexPath(row: self.itemArray.count - 1, section: 0)
+            self.tableView.insertRows(at: [indexPath], with: .fade)
         }
         [cancelAction, addAction].forEach { alert.addAction($0) }
         present(alert, animated: true)
@@ -67,7 +70,6 @@ extension TodoListViewController {
         } catch {
             print("Error saving context, \(error)")
         }
-        tableView.reloadData()
     }
     
     func loadItems() {
@@ -105,6 +107,21 @@ extension TodoListViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         itemArray[indexPath.row].done = !itemArray[indexPath.row].done
         saveItems()
+        tableView.reloadRows(at: [indexPath], with: .none)
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: "Destructive") { action, view, completionHandler in
+            self.context.delete(self.itemArray[indexPath.row])
+            self.itemArray.remove(at: indexPath.row)
+            self.saveItems()
+            self.tableView.deleteRows(at: [indexPath], with: .fade)
+            completionHandler(true)
+        }
+        
+        deleteAction.image = UIImage(systemName: "trash")
+        let swipeConfig = UISwipeActionsConfiguration(actions: [deleteAction])
+        return swipeConfig
     }
 }
