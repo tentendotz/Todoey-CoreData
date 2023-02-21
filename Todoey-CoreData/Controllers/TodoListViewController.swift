@@ -110,13 +110,14 @@ extension TodoListViewController {
     
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: "Destructive") { action, view, completionHandler in
-            print("swipe delete action")
+            self.context.delete(self.itemArray[indexPath.row])
+            self.itemArray.remove(at: indexPath.row)
+            self.saveItems()
             completionHandler(true)
         }
+        
         deleteAction.image = UIImage(systemName: "trash")
-        
         let swipeConfig = UISwipeActionsConfiguration(actions: [deleteAction])
-        
         return swipeConfig
     }
 }
