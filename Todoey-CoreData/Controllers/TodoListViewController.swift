@@ -72,8 +72,10 @@ extension TodoListViewController {
         }
     }
     
-    func loadItems() {
+    func loadItems(predicate: NSPredicate? = nil) {
         let request: NSFetchRequest<Item> = Item.fetchRequest()
+        request.predicate = predicate
+        
         do {
             itemArray = try context.fetch(request)
         } catch {
@@ -87,6 +89,9 @@ extension TodoListViewController {
 extension TodoListViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+        
+        loadItems(predicate: predicate)
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
