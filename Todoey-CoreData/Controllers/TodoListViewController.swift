@@ -19,11 +19,11 @@ class TodoListViewController: UITableViewController {
         super.viewDidLoad()
         
         loadItems()
+        searchBar.delegate = self
         
         let appearance = UINavigationBarAppearance()
         appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
         appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
-        
         appearance.backgroundColor = UIColor.systemIndigo
         searchBar.barTintColor = UIColor.systemIndigo
         
@@ -80,6 +80,17 @@ extension TodoListViewController {
             print("Error fetching data from context, \(error)")
         }
         tableView.reloadData()
+    }
+}
+
+
+extension TodoListViewController: UISearchBarDelegate {
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
     }
 }
 
