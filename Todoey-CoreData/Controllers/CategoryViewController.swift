@@ -7,13 +7,10 @@
 
 import UIKit
 
-class Category {
-    var name = ""
-}
-
 class CategoryViewController: UITableViewController {
     
     var categories = [`Category`]()
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,15 +38,27 @@ class CategoryViewController: UITableViewController {
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
         let addAction = UIAlertAction(title: "Add", style: .default) { action in
-            let newCategory = Category()
+            let newCategory = Category(context: self.context)
             newCategory.name = textField.text!
-            self.categories.append(newCategory)
 
+            self.categories.append(newCategory)
+            self.saveCategories()
             let indexPath = IndexPath(row: self.categories.count - 1, section: 0)
             self.tableView.insertRows(at: [indexPath], with: .fade)
         }
         [cancelAction, addAction].forEach { alert.addAction($0) }
         present(alert, animated: true)
+    }
+    
+    
+    //MARK: - Data Manipulation Methods
+    
+    func saveCategories() {
+        do {
+            try context.save()
+        } catch {
+            print("Error saving category, \(error)")
+        }
     }
     
 }
