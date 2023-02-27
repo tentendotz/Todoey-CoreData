@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 class CategoryViewController: UITableViewController {
     
@@ -15,6 +16,8 @@ class CategoryViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        loadCategories()
+        
         guard let navBar = navigationController?.navigationBar else { fatalError("Navigation controller does not exist.") }
         navBar.prefersLargeTitles = true
         navBar.tintColor = UIColor.white
@@ -23,7 +26,6 @@ class CategoryViewController: UITableViewController {
         appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
         appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
         appearance.backgroundColor = UIColor.systemIndigo
-        
         navigationItem.standardAppearance = appearance
         navigationItem.scrollEdgeAppearance = appearance
     }
@@ -61,6 +63,14 @@ class CategoryViewController: UITableViewController {
         }
     }
     
+    func loadCategories(with request: NSFetchRequest<Category> = Category.fetchRequest()) {
+        do {
+            categories = try context.fetch(request)
+        } catch {
+            print("Error loading categories \(error)")
+        }
+        tableView.reloadData()
+    }
 }
 
 
