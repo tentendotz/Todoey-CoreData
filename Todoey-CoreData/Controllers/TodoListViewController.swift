@@ -14,6 +14,8 @@ class TodoListViewController: UITableViewController {
     
     var itemArray = [Item]()
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+
+    var selectedCategory: Category?
     
     override func viewDidLoad() {
         super.viewDidLoad()
