@@ -31,9 +31,12 @@ class TodoListViewController: UITableViewController {
         appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
         appearance.backgroundColor = UIColor.systemIndigo
         searchBar.barTintColor = UIColor.systemIndigo
-        
         navigationItem.standardAppearance = appearance
         navigationItem.scrollEdgeAppearance = appearance
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
         guard let navBar = navigationController?.navigationBar else { fatalError("Navigation controller does not exist.") }
         navBar.tintColor = UIColor.white
