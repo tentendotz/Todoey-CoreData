@@ -14,11 +14,16 @@ class TodoListViewController: UITableViewController {
     
     var itemArray = [Item]()
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+
+    var selectedCategory: Category? {
+        didSet {
+            loadItems()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loadItems()
         searchBar.delegate = self
         
         let appearance = UINavigationBarAppearance()
@@ -26,10 +31,14 @@ class TodoListViewController: UITableViewController {
         appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
         appearance.backgroundColor = UIColor.systemIndigo
         searchBar.barTintColor = UIColor.systemIndigo
-        
         navigationItem.standardAppearance = appearance
         navigationItem.scrollEdgeAppearance = appearance
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
+        title = selectedCategory?.name
         guard let navBar = navigationController?.navigationBar else { fatalError("Navigation controller does not exist.") }
         navBar.tintColor = UIColor.white
     }
@@ -47,6 +56,7 @@ class TodoListViewController: UITableViewController {
             let newItem = Item(context: self.context)
             newItem.title = textField.text!
             newItem.done = false
+            newItem.parentCategory = self.selectedCategory
 
             self.itemArray.append(newItem)
             self.saveItems()
@@ -73,7 +83,14 @@ extension TodoListViewController {
     }
     
     func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest(), predicate: NSPredicate? = nil) {
-        request.predicate = predicate
+        let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", selectedCategory!.name!)
+        
+        if let additionalPredicate = predicate {
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, additionalPredicate])
+        } else {
+            request.predicate = categoryPredicate
+        }
+        
         do {
             itemArray = try context.fetch(request)
         } catch {
