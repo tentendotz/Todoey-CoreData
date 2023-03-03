@@ -42,6 +42,7 @@ class CategoryViewController: UITableViewController {
         let addAction = UIAlertAction(title: "Add", style: .default) { action in
             let newCategory = Category(context: self.context)
             newCategory.name = textField.text!
+            newCategory.id = UUID()
 
             self.categories.append(newCategory)
             self.saveCategories()
