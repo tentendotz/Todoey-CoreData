@@ -24,6 +24,7 @@ class TodoListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        title = selectedCategory?.name
         searchBar.delegate = self
         
         let appearance = UINavigationBarAppearance()
@@ -38,7 +39,6 @@ class TodoListViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        title = selectedCategory?.name
         guard let navBar = navigationController?.navigationBar else { fatalError("Navigation controller does not exist.") }
         navBar.tintColor = UIColor.white
     }
